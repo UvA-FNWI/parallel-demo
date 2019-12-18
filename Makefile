@@ -1,13 +1,14 @@
-EXE=prime
+EXECUTABLES=hello hello-omp primes
 
-EXPENSIVE_JUNK += $(EXE) cmake-build-*
+EXPENSIVE_JUNK += $(EXECUTABLES) cmake-build-*
 
-SRC = primes.c
+SRC = primes.c hello.c hello-omp.c
 OBJ = $(SRC:.c=.o)
 
 JUNK += $(OBJ)
 
-CFLAGS += -Xpreprocessor -fopenmp -O3 -Wall -W
+CFLAGS += -O3 -Wall -W
+OMP_CFLAGS = $(CFLAGS) -fopenmp
 
 LDFLAGS += -lomp
 
@@ -17,7 +18,7 @@ help:
 	@echo "clean\tThrow away all files that are easy to produce again"
 	@echo "empty\tThrow away all files that can be produced again"
 
-all: $(EXE)
+all: $(EXECUTABLES)
 
 clean:
 	rm -rf $(JUNK)
@@ -25,5 +26,16 @@ clean:
 empty:
 	rm -rf $(JUNK) $(EXPENSIVE_JUNK)
 
+hello: hello.c
+	$(CC) $(CFLAGS) -o hello hello.c
+
 $(EXE): $(OBJ)
-	$(CC) $(LDFLAGS) -o $(EXE) $(OBJ)
+	$(CC) $(CFLAGS) -o $(EXE) $(OBJ)
+
+
+hello-omp: hello-omp.c
+	$(CC) $(OMP_CFLAGS) -o hello-omp hello-omp.c
+
+primes: primes.c
+	$(CC) $(OMP_CFLAGS) -o primes primes.c -lm
+
