@@ -1,14 +1,14 @@
-EXECUTABLES=hello hello-omp primes
+EXECUTABLES=hello hello-omp primes primes-mpi
 
 EXPENSIVE_JUNK += $(EXECUTABLES) cmake-build-*
 
-SRC = primes.c hello.c hello-omp.c
-OBJ = $(SRC:.c=.o)
+SRC = primes.c hello.c hello-omp.c primes-mpi.c
 
-JUNK += $(OBJ)
+JUNK +=
 
 CFLAGS += -O3 -Wall -W
 OMP_CFLAGS = $(CFLAGS) -fopenmp
+MPI_CFLAGS = $(CFLAGS) -fmpi
 
 LDFLAGS += -lomp
 
@@ -38,4 +38,7 @@ hello-omp: hello-omp.c
 
 primes: primes.c
 	$(CC) $(OMP_CFLAGS) -o primes primes.c -lm
+
+primes-mpi: primes-mpi.c
+	$(CC) $(MPI_CFLAGS) -o primes-mpi primes-mpi.c -lm
 

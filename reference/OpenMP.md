@@ -40,6 +40,20 @@ int omp_get_max_threads(void)
 
 Returns the number of threads used by OpenMP.
 
+```c
+double omp_get_wtime(void);
+```
+
+Returns the elapsed wall clock time in seconds. The reference time (0.0) is an unspecified time in the past. Thus, only
+time differences are useful. Typical use pattern:
+```c
+double start = omp_get_wtime(); 
+// work to be timed ... 
+double finish = omp_get_wtime(); 
+printf("Work took %.2f seconds\n", finish - start);
+
+```
+
 ```shell script
 OMP_NUM_THREADS
 ```
