@@ -96,6 +96,7 @@ static void await_result(int *worker, int *result) {
  */
 static int run_as_master(const int workers, const long int startval, const long int nval) {
     int primes = 0;
+    const long int endval = startval + nval;
     long int val = startval;
 
     if (val == 2) {
@@ -125,7 +126,7 @@ int main(int argc, char *argv[]) {
     int size;
 
     const long int base = 10000000000001UL;
-    const long int r = 1000000;
+    const long int r = 4000000;
 
     /* Start up MPI */
     MPI_Init(&argc, &argv);
@@ -136,8 +137,10 @@ int main(int argc, char *argv[]) {
 
     if (am_master) {
         printf("Running as master\n");
+        const double start = MPI_Wtime();
         int primes = run_as_master(size - 1, base, r);
-        printf("Master has finished. There are %d primes between %lu and %lu\n", primes, base, base + r);
+        const double finish = MPI_Wtime();
+        printf("Master has finished. There are %d primes between %ld and %ld, this took %.1f seconds\n", primes, base, base + r, finish-start);
     } else {
         printf("Running as worker %d\n", rank);
         run_as_worker();
