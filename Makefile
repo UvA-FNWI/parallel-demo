@@ -8,7 +8,7 @@ JUNK +=
 
 CFLAGS += -O3 -Wall -W
 OMP_CFLAGS = $(CFLAGS) -fopenmp
-MPI_CFLAGS = $(CFLAGS) -fmpi
+MPI_CFLAGS = $(CFLAGS) -lmpi
 
 LDFLAGS += -lomp
 
@@ -40,5 +40,5 @@ primes: primes.c
 	$(CC) $(OMP_CFLAGS) -o primes primes.c -lm
 
 primes-mpi: primes-mpi.c
-	$(CC) $(MPI_CFLAGS) -o primes-mpi primes-mpi.c -lm
+	mpiCC $(MPI_CFLAGS) -o primes-mpi primes-mpi.c -lm
 

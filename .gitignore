@@ -1,6 +1,8 @@
 a.out
 hello-omp
 primes
+primes-mpi
 hello
 README.md
 *.o
+slurm-*.out
