@@ -15,7 +15,7 @@
  * @param n The value to examine.
  * @return {\code true} iff the value is prime.
  */
-static bool is_prime(long int n) {
+bool is_prime(long int n) {
     if (n < 2) {
         return false;
     }
@@ -43,7 +43,7 @@ static bool is_prime(long int n) {
  * @param worker  The worker to send the message to.
  * @param val The value to examine.
  */
-static void send_work_command(int worker, long int val) {
+void send_work_command(int worker, long int val) {
     // printf("send_work_command: worker=%d val=%lu\n", worker, val);
     MPI_Send(&val, 1, MPI_UINT64_T, worker, 0, MPI_COMM_WORLD);
 }
@@ -56,7 +56,7 @@ static void send_work_command(int worker, long int val) {
  *
  * @param result The result.
  */
-static void send_result(int result) {
+void send_result(int result) {
     MPI_Send(&result, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 }
 
@@ -66,7 +66,7 @@ static void send_result(int result) {
  *
  * @param val A pointer to the value to fill with the received value.
  */
-static void await_command(long int *val) {
+void await_command(long int *val) {
     MPI_Recv(val, 1, MPI_INT64_T, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
              MPI_STATUS_IGNORE);
 }
@@ -78,7 +78,7 @@ static void await_command(long int *val) {
  * @param worker A pointer to the variable that will hold the worker that sent the result.
  * @param result A pointer to the variable that will hold the result.
  */
-static void await_result(int *worker, int *result) {
+void await_result(int *worker, int *result) {
     MPI_Status status;
     MPI_Recv(result, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD,
              &status);
@@ -94,7 +94,7 @@ static void await_result(int *worker, int *result) {
  * @param nval The number of values to examine.
  * @return The number of values in the specified range.
  */
-static int run_as_master(const int workers, const long int startval, const long int nval) {
+int run_as_master(const int workers, const long int startval, const long int nval) {
     int primes = 0;
     const long int endval = startval + nval;
     long int val = startval;
@@ -104,8 +104,8 @@ static int run_as_master(const int workers, const long int startval, const long 
         primes++;
         val++;
     }
-    if ((val & 1) == 0) {
-        // If we start with an even number, skip it. Note tha`t we dealt with 2 above.
+    if ((val % 2) == 0) {
+        // If we start with an even number, skip it. Note that we already dealt with 2 above.
         val++;
     }
 
@@ -117,7 +117,7 @@ static int run_as_master(const int workers, const long int startval, const long 
 /**
  * The code to run as worker: receive jobs, execute them, and terminate when told to.
  */
-static void run_as_worker(void) {
+void run_as_worker(void) {
     // TODO: Insert your code here.
 }
 
