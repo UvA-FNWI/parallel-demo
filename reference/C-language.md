@@ -43,20 +43,22 @@ Relevant `<type>` values are:
 type | User
 :--- | :----
 `GCC` | The Gnu C compiler (gcc)
-`OMP` | Any compiler supporting OpenMP
-`STDC` | Any compiler supporting the 1999 version of the C standard
+`OMP` | Compilers supporting OpenMP
+`STDC` | Compilers supporting the 1999 version of the C standard
 
 
 ## Types
 
-name     | printf format | bits | description
--------  | ------------: | ---: | ----
-int      |  %d           | 32   | integer
-long int | %ld           | 64   | long integer
-char     | %c            |  8   | character
-float    | %f            | 32   | floating-point number (IEEE 754-1985)
-double   | %f            | 64   | floating-point number (IEEE 754-1985)
-char *   | %s            | 64   | pointer to char (strings are char arrays ending with '\0' character)
+name     | bits | description
+-------  | ---: | ----
+int      | 32   | integer
+long int | 64   | long integer
+char     |  8   | character
+float    | 32   | floating-point number (IEEE 754-1985)
+double   | 64   | floating-point number (IEEE 754-1985)
+void     |  -   | The 'void' type
+char *   | 64   | pointer to char (strings are char arrays ending with '\0' character)
+void *   | 64   | pointer to any type of data
 
 
 **Disclaimer**: the C standard does not dictate the exact number of bits in a type, the values shown above are just
@@ -79,7 +81,30 @@ are also allowed: `0xff` is the same value as `255`. Long integers can be writte
 adding a 'L' at the end: '0L', '12345678L', `-3L`, `0x1234567890ABCDEFL`.
 
 Character constants are written by surrounding a single letter with single quotes: `'a'`, `'B'`,
-`'0'`, `'$'`, `']'`.
+`'0'`, `'$'`, `']'`. Some special characters:
+
+Some character sequences starting with a backslash have a special meaning. They are called 'escape sequences', and
+the starting backslash is called the 'escape character'.
+
+character | ASCII value | description
+:-------- | ----------: | -----
+'\0'      | 0           | Null
+'\a'      | 7           | Bell
+'\b'      | 8           | Backspace
+'\t'      | 9           | Tab
+'\n'      | 10          | New line: the portable C way to start a new line, even on systems that natively require something else
+'\r'      | 13          | Carriage return
+'\\\\'    | 92          | A single backslash
+
+The same escape sequences can also be used in strings:
+
+```c
+"Hello world\n"
+```
+ends the string with a new line (and the implicit terminating null character).
+
+Floating point `double` constants are written like `10.2`, `-3.14159`, `1.2e3`, `3e-2`, `float` constants have
+the suffix `f`: `10.2f`, `1.2e3f`.
 
 ## Arrays and pointers
 
@@ -135,9 +160,21 @@ defines a pointer to an array of characters:
 ## The printf() function
 
 The function `printf()` prints a string to the standard output, with format strings replaced by the value of extra
-parameters. Example:
+parameters. Most important format strings:
+
+name     | printf format |  description
+-------  | ------------: | ----
+int      |  %d           | integer
+long int | %ld           | long integer
+char     | %c            | character
+float    | %f            | floating-point number (IEEE 754-1985)
+double   | %f            | floating-point number (IEEE 754-1985)
+char *   | %s            | pointer to char (strings are char arrays ending with '\0' character)
+
+
+Example:
 ```c
-printf(“The square root of %d is %.4f\n”, 3, sqrt(3));
+printf(“The square root of %d is %f\n”, 3, sqrt(3));
 ```
 Output:
 ```
@@ -156,7 +193,7 @@ Use `%%` to get a single `%`.
 ## The main() function
 
 ```c
-int main(void)
+int main()
 {
     return 0;
 }
