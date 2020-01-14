@@ -49,7 +49,7 @@ void fill_cells(double cells[])
  * @param col The number of the column to send.
  */
 void send_column(const int proc, const double *cells, const int col) {
-    MPI_Send(&cells[compute_index(1, col)], ROWS, MPI_DOUBLE_T, proc, 0, MPI_COMM_WORLD);
+    MPI_Send(&cells[compute_index(1, col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
 }
 
 /**
@@ -62,7 +62,7 @@ void send_column(const int proc, const double *cells, const int col) {
  * @param col The number of the column to put the received data.
  */
 void recv_column(int proc, double *cells, const int col) {
-    MPI_Recv(&cells[compute_index(1, col)], ROWS, MPI_DOUBLE_T, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
+    MPI_Recv(&cells[compute_index(1, col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
              MPI_STATUS_IGNORE);
 }
 
@@ -71,7 +71,7 @@ void run_stencil(const double old_cells[], double new_cells[])
     for(int row = 1; row<=ROWS; row++){
         for(int col = 1; col<=COLUMNS_PER_PROCESSOR; col++){
             int ix = compute_index(row, col);
-            new_cells[ix] = 0.5 * old_cells[ix] + 0.125 * (old_cells[ix-1] + old_cells[ix+1] + old_cells[ix+COLUMN_SIZE] + old_cells[ix-COLUMN_SIZE])
+            new_cells[ix] = 0.5 * old_cells[ix] + 0.125 * (old_cells[ix-1] + old_cells[ix+1] + old_cells[ix+COLUMN_SIZE] + old_cells[ix-COLUMN_SIZE]);
         }
     }
 }
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
     printf("Running as processor %d\n", rank);
 
     int left_neighbour = rank-1;
-    int right_neighbor = rank+1;
+    int right_neighbour = rank+1;
 
     fill_cells(cells1);
     double *old_cells = cells1;

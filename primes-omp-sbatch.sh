@@ -3,4 +3,4 @@
 
 export OMP_NUM_THREADS=`nproc --all`
 
-/home/reeuwijk/lab/parallel-demo/primes
+$HOME/lab/parallel-demo/primes
