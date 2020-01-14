@@ -14,10 +14,10 @@
 #define COLUMN_SIZE (ROWS+2)
 #define ITERATIONS (100)
 
-#define ARRAY_SIZE (COLUMNSIZE*(COLUMNS_PER_PROCESSOR+2))
+#define ARRAY_SIZE (COLUMN_SIZE*(COLUMNS_PER_PROCESSOR+2))
 
 /* Data is stored column-wise in a one-dimensional array. Thus the next element in a column is
- * adjacent, the next element in a row is COLUMNSIZE elements further.
+ * adjacent, the next element in a row is COLUMN_SIZE elements further.
  */
 double cells1[ARRAY_SIZE];
 double cells2[ARRAY_SIZE];
