@@ -4,4 +4,4 @@
 #export OMP_NUM_THREADS=`nproc --all`
 #export OMP_NUM_THREADS=16
 
-/home/reeuwijk/lab/parallel-demo/hello-omp
+$HOME/lab/parallel-demo/hello-omp

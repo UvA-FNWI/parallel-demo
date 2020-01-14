@@ -45,7 +45,7 @@ bool is_prime(long int n) {
  */
 void send_work_command(int worker, long int val) {
     // printf("send_work_command: worker=%d val=%lu\n", worker, val);
-    MPI_Send(&val, 1, MPI_UINT64_T, worker, 0, MPI_COMM_WORLD);
+    MPI_Send(&val, 1, MPI_LONG, worker, 0, MPI_COMM_WORLD);
 }
 
 
@@ -67,7 +67,7 @@ void send_result(int result) {
  * @param val A pointer to the value to fill with the received value.
  */
 void await_command(long int *val) {
-    MPI_Recv(val, 1, MPI_INT64_T, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
+    MPI_Recv(val, 1, MPI_LONG, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
              MPI_STATUS_IGNORE);
 }
 
