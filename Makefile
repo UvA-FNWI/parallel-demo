@@ -42,3 +42,6 @@ primes: primes.c
 primes-mpi: primes-mpi.c
 	mpiCC $(MPI_CFLAGS) -o primes-mpi primes-mpi.c -lm
 
+stencil-mpi: stencil-mpi.c
+	mpiCC $(MPI_CFLAGS) -o stencil-mpi stencil-mpi.c -lm
+
