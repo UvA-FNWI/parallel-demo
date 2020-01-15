@@ -9,8 +9,8 @@
 #include <math.h>
 
 
-#define COLUMNS_PER_PROCESSOR (10000)
-#define ROWS (30000)
+#define COLUMNS_PER_PROCESSOR (10)
+#define ROWS (100)
 #define COLUMN_SIZE (ROWS+2)
 #define ITERATIONS (100)
 
@@ -31,13 +31,13 @@ int compute_index(const int row, const int column)
  * Given an array to fill, put zeroes everywhere, plus a few scattered non-zero values.
  * @param cells The array to fill
  */
-void fill_cells(double cells[])
+void fill_cells(double *cells)
 {
     for(int i=0; i<ARRAY_SIZE; i++){
         cells[i] = 0.0;
     }
     cells[compute_index(2, 2)] = 100.0;
-    cells[compute_index(50, 50)] = 50.0;
+    cells[compute_index(ROWS/4, COLUMNS_PER_PROCESSOR/4)] = 50.0;
     cells[compute_index(ROWS/2, COLUMNS_PER_PROCESSOR/2)] = -1000.0;
 }
 
@@ -49,7 +49,7 @@ void fill_cells(double cells[])
  * @param col The number of the column to send.
  */
 void send_column(const int proc, const double *cells, const int col) {
-    MPI_Send(&cells[compute_index(1, col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
+    MPI_Send(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
 }
 
 /**
@@ -62,16 +62,17 @@ void send_column(const int proc, const double *cells, const int col) {
  * @param col The number of the column to put the received data.
  */
 void recv_column(int proc, double *cells, const int col) {
-    MPI_Recv(&cells[compute_index(1, col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
+    MPI_Recv(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
              MPI_STATUS_IGNORE);
 }
 
-void run_stencil(const double old_cells[], double new_cells[])
+void run_stencil(const double *old_cells, double *new_cells)
 {
-    for(int row = 1; row<=ROWS; row++){
-        for(int col = 1; col<=COLUMNS_PER_PROCESSOR; col++){
-            int ix = compute_index(row, col);
+    for(int row = 0; row<ROWS; row++){
+        int ix = compute_index(row, 0);
+        for(int col = 0; col<COLUMNS_PER_PROCESSOR; col++){
             new_cells[ix] = 0.5 * old_cells[ix] + 0.125 * (old_cells[ix-1] + old_cells[ix+1] + old_cells[ix+COLUMN_SIZE] + old_cells[ix-COLUMN_SIZE]);
+            ix++;
         }
     }
 }
