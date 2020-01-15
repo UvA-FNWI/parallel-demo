@@ -6,7 +6,7 @@ SRC = primes.c hello.c hello-omp.c primes-mpi.c
 
 JUNK += hello hello-omp primes primes-mpi stencil-mpi
 
-CFLAGS += -O3 -Wall -W
+CFLAGS += -O3 -Wall -W --std=C11
 OMP_CFLAGS = $(CFLAGS) -fopenmp
 MPI_CFLAGS = $(CFLAGS) -lmpi
 
