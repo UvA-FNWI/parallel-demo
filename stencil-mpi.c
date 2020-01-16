@@ -63,27 +63,17 @@ void run_stencil(const double *old_cells, double *new_cells)
 }
 
 /**
- * Send a column of data to the given processor.
+ * Exchange columns of data with the given processor.
  *
- * @param proc  The processor to send the column to.
- * @param cells The array to take the column from.
- * @param col The number of the column to send.
+ * @param proc  The processor to exchange columns with.
+ * @param cells The array where the columns live.
+ * @param send_col The number of the column to send.
+ * @param recv_col The number of the column to receive.
  */
-void send_column(const int proc, const double *cells, const int col) {
-    MPI_Send(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
-}
-
-/**
- * Receive a column of data from the given processor. Note that since the data is stored on the borders of
- * the normal array, the column numbers look odd, namely -1 and COLUMNS_PER_PROCESSOR. This is as designed,
- * and the array is large enough to hold the data.
- *
- * @param proc  The processor to receive the column from.
- * @param cells The array to write the column to.
- * @param col The number of the column to put the received data.
- */
-void recv_column(int proc, double *cells, const int col) {
-    MPI_Recv(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
+void exchange_columns(const int proc, const double *cells, const int send_col, const int recv_col) {
+    // Put communication here.
+    MPI_Send(&cells[compute_index(0, send_col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
+    MPI_Recv(&cells[compute_index(0, recv_col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
              MPI_STATUS_IGNORE);
 }
 
@@ -101,17 +91,24 @@ int main(int argc, char *argv[]) {
     int right_neighbour = rank+1;
 
     fill_cells(cells1);
-    fill_cells(cells2);
+    fill_cells(cells2); // For the borders
     double *old_cells = cells1;
     double *new_cells = cells2;
     const double start = MPI_Wtime();
     for(int iter=0; iter<ITERATIONS; iter++){
         printf("Processor %d/%d: starting iteration %d\n", rank, size, iter);
-        // Put communication here.
-        // Don't communicate with processors out or the range 0..(size-1) inclusive.
+        // First exchange columns with the neighbours if any.
+        //
+        // Don't communicate with processors out of the range 0..(size-1) inclusive.
         // Send your own columns 0 and (COLUMNS_PER_PROCESSOR-1) to left and right neighbour respectively.
         // Receive columns from left and right neighbour into columns -1 and COLUMNS_PER_PROCESSOR respectively.
         // Yes, there is room in the array for those two extra columns.
+        if (left_neighbour >= 0) {
+            exchange_columns(left_neighbour, old_cells, 0, -1);
+        }
+        if (right_neighbour < size) {
+            exchange_columns(right_neighbour, old_cells, COLUMNS_PER_PROCESSOR-1, COLUMNS_PER_PROCESSOR);
+        }
         run_stencil(old_cells, new_cells);
         {
             // Swap the role of the two arrays.
