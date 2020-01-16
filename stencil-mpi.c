@@ -70,11 +70,8 @@ void run_stencil(const double *old_cells, double *new_cells)
  * @param send_col The number of the column to send.
  * @param recv_col The number of the column to receive.
  */
-void exchange_columns(const int proc, const double *cells, const int send_col, const int recv_col) {
+void exchange_columns(const int proc, double *cells, const int send_col, const int recv_col) {
     // Put communication here.
-    MPI_Send(&cells[compute_index(0, send_col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
-    MPI_Recv(&cells[compute_index(0, recv_col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
-             MPI_STATUS_IGNORE);
 }
 
 int main(int argc, char *argv[]) {
