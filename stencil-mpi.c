@@ -18,6 +18,11 @@
 
 /* Data is stored column-wise in a one-dimensional array. Thus the next element in a column is
  * adjacent, the next element in a row is COLUMN_SIZE elements further.
+ *
+ * There is room beyond the normal array of ROWS x COLUMNS_PER_PROCESSOR for a top and bottom row that is never
+ * written and will always have value 0.0, and also for an extra column to the left and right to store a column
+ * from the left and right neighbour respectively, or for permanent 0.0s of the processor is the leftmost or
+ * rightmost.
  */
 double cells1[ARRAY_SIZE];
 double cells2[ARRAY_SIZE];
@@ -91,11 +96,17 @@ int main(int argc, char *argv[]) {
     int right_neighbour = rank+1;
 
     fill_cells(cells1);
+    fill_cells(cells2);
     double *old_cells = cells1;
     double *new_cells = cells2;
     const double start = MPI_Wtime();
     for(int iter=0; iter<ITERATIONS; iter++){
-        // Communication goes here.
+        printf("Processor %d/%d: starting iteration %d", rank, size, iter);
+        // Put communication here.
+        // Don't communicate with processors out or the range 0..(size-1) inclusive.
+        // Send your own columns 0 and (COLUMNS_PER_PROCESSOR-1) to left and right neighbour respectively.
+        // Receive columns from left and right neighbour into columns -1 and COLUMNS_PER_PROCESSOR respectively.
+        // Yes, there is room in the array for those two extra columns.
         run_stencil(old_cells, new_cells);
         {
             // Swap the role of the two arrays.
