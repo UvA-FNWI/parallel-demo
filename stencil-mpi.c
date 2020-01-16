@@ -12,7 +12,7 @@
 #define COLUMNS_PER_PROCESSOR (10)
 #define ROWS (100)
 #define COLUMN_SIZE (ROWS+2)
-#define ITERATIONS (100)
+#define ITERATIONS (25)
 
 #define ARRAY_SIZE (COLUMN_SIZE*(COLUMNS_PER_PROCESSOR+2))
 
@@ -47,6 +47,22 @@ void fill_cells(double *cells)
 }
 
 /**
+ * Apply the stencil operation to all cells in old_cells, and write the result to the cells in new_cells.
+ * @param old_cells The cells to apply the stencil operation to.
+ * @param new_cells The cells to fill with the result of the stencil operation.
+ */
+void run_stencil(const double *old_cells, double *new_cells)
+{
+    for(int row = 0; row<ROWS; row++){
+        int ix = compute_index(row, 0);
+        for(int col = 0; col<COLUMNS_PER_PROCESSOR; col++){
+            new_cells[ix] = 0.5 * old_cells[ix] + 0.125 * (old_cells[ix-1] + old_cells[ix+1] + old_cells[ix+COLUMN_SIZE] + old_cells[ix-COLUMN_SIZE]);
+            ix++;
+        }
+    }
+}
+
+/**
  * Send a column of data to the given processor.
  *
  * @param proc  The processor to send the column to.
@@ -71,17 +87,6 @@ void recv_column(int proc, double *cells, const int col) {
              MPI_STATUS_IGNORE);
 }
 
-void run_stencil(const double *old_cells, double *new_cells)
-{
-    for(int row = 0; row<ROWS; row++){
-        int ix = compute_index(row, 0);
-        for(int col = 0; col<COLUMNS_PER_PROCESSOR; col++){
-            new_cells[ix] = 0.5 * old_cells[ix] + 0.125 * (old_cells[ix-1] + old_cells[ix+1] + old_cells[ix+COLUMN_SIZE] + old_cells[ix-COLUMN_SIZE]);
-            ix++;
-        }
-    }
-}
-
 int main(int argc, char *argv[]) {
     int rank;
     int size;
@@ -101,7 +106,7 @@ int main(int argc, char *argv[]) {
     double *new_cells = cells2;
     const double start = MPI_Wtime();
     for(int iter=0; iter<ITERATIONS; iter++){
-        printf("Processor %d/%d: starting iteration %d", rank, size, iter);
+        printf("Processor %d/%d: starting iteration %d\n", rank, size, iter);
         // Put communication here.
         // Don't communicate with processors out or the range 0..(size-1) inclusive.
         // Send your own columns 0 and (COLUMNS_PER_PROCESSOR-1) to left and right neighbour respectively.
