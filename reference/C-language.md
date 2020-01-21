@@ -32,6 +32,28 @@ File | Content
 `math.h` | Functions on floating-point numbers, such as `sin()`, `exp()`, and `sqrt()`
 `omp.h` | The OpenMP library
 
+```c
+#define <name> <replacement>
+```
+Where `<name>` is a name token, and `<replacement>` is a replacement string that is itself
+also subject to `#define` replacement. All occurrences of the `<name>` token are replaced
+by the token sequence in `<replacement>`. By convention `<name>` is completely in CAPITALS,
+for example:
+
+```c
+#define ITERATIONS (25)
+```
+
+It is a good habit to surround numbers and numerical expressions with `()` to avoid unexpected
+parsings of the token string. Consider for example:
+
+```c
+#define A 100
+#define B -25
+int x = A B;
+```
+is perfectly legal C, and inititialises `x` with the value 75. This is almost certainly not
+what the programmer intended.
 
 ```c
 #pragma <type> <hint>
@@ -118,10 +140,29 @@ for (int i=1; i<10; i++)
 
 Pointers are typed addresses, with the type written as `<type> *`. Examples: `int *`, `char **`.
 You can do arithmetic on pointers: `p + 1` points to the next element after the one `p` points to.
+The unary `&` operator takes the address of an assignable expression, and to access the element that the pointer
+points to, use the unary `*`:
 
-Array variables are almost pointers, but they have a fixed value.
+```c
+int var = 22;
+int *p = &var;
+*p += 2 * 3;
+```
+results in `var` having the value 28. Note the two different ways that the `*` operator is used:
+for pointer dereferencing, and for multiplication.
 
-Accessing elements uses `*` or `[ ]':
+Array variables are almost pointers, but they have a fixed value, and the `[ ]' operator is also
+allowed on pointers:
+
+```c
+int a[10];
+int *p = a;
+*p++ = 1;
+for (int i=1; i<10; i++)
+    *p++ = p[-1];
+```
+
+Or equivalently:
 
 ```c
 int a[10];
@@ -133,19 +174,9 @@ for (int i=1; i<10; i++){
 }
 ```
 
-Or:
-
-```c
-int a[10];
-int *p = a;
-*p++ = 1;
-for (int i=1; i<10; i++)
-    *p++ = p[-1];
-```
-
 ## Strings
 
-Strings don't have a special type, they are `const char *`. Strings end with a '\0' character.
+Strings don't have a special type, they are `char *`. Strings end with a '\0' character.
 
 For example, the string:
 ```c

@@ -4,7 +4,7 @@ EXPENSIVE_JUNK += $(EXECUTABLES) cmake-build-*
 
 SRC = primes.c hello.c hello-omp.c primes-mpi.c
 
-JUNK += hello hello-omp primes primes-mpi stencil-mpi
+JUNK += hello primes-omp primes-mpi stencil-mpi
 
 CFLAGS += -O3 -Wall -W --std=c11
 OMP_CFLAGS = $(CFLAGS) -fopenmp
