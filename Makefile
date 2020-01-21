@@ -1,16 +1,14 @@
 EXECUTABLES=hello primes-omp primes-mpi stencil-mpi
 
-EXPENSIVE_JUNK += $(EXECUTABLES) cmake-build-*
+EXPENSIVE_JUNK += $(EXECUTABLES)
 
 SRC = hello.c primes-omp.c primes-mpi.c stencil-mpi.c
 
-JUNK += hello primes-omp primes-mpi stencil-mpi
+JUNK +=
 
-CFLAGS += -O3 -Wall -W --std=c11
+CFLAGS += -O3 -Wall -W --std=c11 -lm
 OMP_CFLAGS = $(CFLAGS) -fopenmp
 MPI_CFLAGS = $(CFLAGS) -lmpi
-
-LDFLAGS += -lomp
 
 help:
 	@echo "help\tShow this help text"
@@ -30,11 +28,11 @@ hello: hello.c
 	$(CC) $(CFLAGS) -o hello hello.c
 
 primes-omp: primes-omp.c
-	$(CC) $(OMP_CFLAGS) -o primes primes.c -lm
+	$(CC) $(OMP_CFLAGS) -o primes primes.c
 
 primes-mpi: primes-mpi.c
-	mpiCC $(MPI_CFLAGS) -o primes-mpi primes-mpi.c -lm
+	mpiCC $(MPI_CFLAGS) -o primes-mpi primes-mpi.c
 
 stencil-mpi: stencil-mpi.c
-	mpiCC $(MPI_CFLAGS) -o stencil-mpi stencil-mpi.c -lm
+	mpiCC $(MPI_CFLAGS) -o stencil-mpi stencil-mpi.c
 
