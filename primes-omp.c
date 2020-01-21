@@ -30,7 +30,6 @@ int main(void) {
     const long int r = 4000000;
     int primes = 0;
     const double start = omp_get_wtime();
-#pragma omp parallel for reduction(+: primes)
     for (long int n = base; n < base + r; n += 2) {
         bool prime = is_prime(n);
         if (prime) {
