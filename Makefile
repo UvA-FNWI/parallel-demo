@@ -1,8 +1,8 @@
-EXECUTABLES=hello hello-omp primes primes-mpi
+EXECUTABLES=hello primes-omp primes-mpi stencil-mpi
 
 EXPENSIVE_JUNK += $(EXECUTABLES) cmake-build-*
 
-SRC = primes.c hello.c hello-omp.c primes-mpi.c
+SRC = hello.c primes-omp.c primes-mpi.c stencil-mpi.c
 
 JUNK += hello primes-omp primes-mpi stencil-mpi
 
@@ -29,14 +29,7 @@ empty:
 hello: hello.c
 	$(CC) $(CFLAGS) -o hello hello.c
 
-$(EXE): $(OBJ)
-	$(CC) $(CFLAGS) -o $(EXE) $(OBJ)
-
-
-hello-omp: hello-omp.c
-	$(CC) $(OMP_CFLAGS) -o hello-omp hello-omp.c
-
-primes: primes.c
+primes-omp: primes-omp.c
 	$(CC) $(OMP_CFLAGS) -o primes primes.c -lm
 
 primes-mpi: primes-mpi.c
