@@ -28,7 +28,7 @@ hello: hello.c
 	$(CC) $(CFLAGS) -o hello hello.c
 
 primes-omp: primes-omp.c
-	$(CC) $(OMP_CFLAGS) -o primes primes.c
+	$(CC) $(OMP_CFLAGS) -o primes-omp primes-omp.c
 
 primes-mpi: primes-mpi.c
 	mpiCC $(MPI_CFLAGS) -o primes-mpi primes-mpi.c
