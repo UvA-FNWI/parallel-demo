@@ -3,4 +3,4 @@
 
 export OMP_NUM_THREADS=`nproc --all`
 
-./primes
+./primes-omp
