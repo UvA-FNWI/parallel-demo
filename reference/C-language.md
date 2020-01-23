@@ -76,8 +76,7 @@ name     | bits | description
 int      | 32   | integer
 long int | 64   | long integer
 char     |  8   | character
-float    | 32   | floating-point number (IEEE 754-1985)
-double   | 64   | floating-point number (IEEE 754-1985)
+double   | 64   | floating-point number
 void     |  -   | The 'void' type
 char *   | 64   | pointer to char (strings are char arrays ending with '\0' character)
 void *   | 64   | pointer to any type of data
@@ -125,8 +124,7 @@ The same escape sequences can also be used in strings:
 ```
 ends the string with a new line (and the implicit terminating null character).
 
-Floating point `double` constants are written like `10.2`, `-3.14159`, `1.2e3`, `3e-2`, `float` constants have
-the suffix `f`: `10.2f`, `1.2e3f`.
+Floating point `double` constants are written like `10.2`, `-3.14159`, `1.2e3`, `3e-2`.
 
 ## Arrays and pointers
 
@@ -198,7 +196,6 @@ name     | printf format |  description
 int      |  %d           | integer
 long int | %ld           | long integer
 char     | %c            | character
-float    | %f            | floating-point number (IEEE 754-1985)
 double   | %f            | floating-point number (IEEE 754-1985)
 char *   | %s            | pointer to char (strings are char arrays ending with '\0' character)
 
@@ -235,5 +232,6 @@ A C compiler recognizes a few other types of `main()` function as well, but that
 ## The #pragma annotations
 
 ## Compiling and running a C program
+
 
 ## Further reading

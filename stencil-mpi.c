@@ -47,10 +47,37 @@ void fill_cells(double *cells)
 }
 
 /**
+<<<<<<< HEAD
  * Apply the stencil operation to all cells in old_cells, and write the result to the cells in new_cells.
  * @param old_cells The cells to apply the stencil operation to.
  * @param new_cells The cells to fill with the result of the stencil operation.
  */
+=======
+ * Send a column of data to the given processor.
+ *
+ * @param proc  The processor to send the column to.
+ * @param cells The array to take the column from.
+ * @param col The number of the column to send.
+ */
+void send_column(const int proc, const double *cells, const int col) {
+    MPI_Send(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
+}
+
+/**
+ * Receive a column of data from the given processor. Note that since the data is stored on the borders of
+ * the normal array, the column numbers look odd, namely -1 and COLUMNS_PER_PROCESSOR. This is as designed,
+ * and the array is large enough to hold the data.
+ *
+ * @param proc  The processor to receive the column from.
+ * @param cells The array to write the column to.
+ * @param col The number of the column to put the received data.
+ */
+void recv_column(int proc, double *cells, const int col) {
+    MPI_Recv(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
+             MPI_STATUS_IGNORE);
+}
+
+>>>>>>> 6e4f9c040469143ea8a181ccc3d75d7d34696a9d
 void run_stencil(const double *old_cells, double *new_cells)
 {
     for(int row = 0; row<ROWS; row++){
@@ -93,6 +120,7 @@ int main(int argc, char *argv[]) {
     double *new_cells = cells2;
     const double start = MPI_Wtime();
     for(int iter=0; iter<ITERATIONS; iter++){
+        // Communication goes here.
         printf("Processor %d/%d: starting iteration %d\n", rank, size, iter);
         // First exchange columns with the neighbours if any.
         //

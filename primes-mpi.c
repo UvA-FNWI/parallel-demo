@@ -88,16 +88,16 @@ void await_result(int *worker, int *result) {
 
 /**
  * The code to run as master: send jobs to the workers, and await their replies.
+ * There are `worker_count` workers, numbered from 1 up to and including `worker_count`.
  *
- * @param workers The number of workers
+ * @param worker_count The number of workers
  * @param startval  The first value to examine.
  * @param nval The number of values to examine.
  * @return The number of values in the specified range.
  */
-int run_as_master(const int workers, const long int startval, const long int nval) {
-    int primes = 0;
-    const long int endval = startval + nval;
-    long int val = startval;
+int run_as_master(int worker_count, long int startval, long int nval) {
+    int active_workers = 0, primes = 0;
+    long int val = startval, endval = startval + nval;
 
     if (val == 2) {
         // Handling 2, (the only even prime) is messy, so we cheat, and just count it in immediately.
@@ -108,9 +108,23 @@ int run_as_master(const int workers, const long int startval, const long int nva
         // If we start with an even number, skip it. Note that we already dealt with 2 above.
         val++;
     }
-
-    // TODO: Insert your code here.
-
+    for (int worker = 1; worker <worker_count && val <= endval; worker++) {
+        send_work_command(worker, val);
+        val += 2;
+        active_workers++;
+    }
+    while (active_workers > 0) {
+        int worker, result;
+        // TODO: put communication call here
+        primes += result;
+        if (val <= endval) {
+            // TODO: put communication call here
+            val += 2;
+        } else {
+            // TODO: put communication call here
+            active_workers--;
+        }
+    }
     return primes;
 }
 
@@ -118,7 +132,15 @@ int run_as_master(const int workers, const long int startval, const long int nva
  * The code to run as worker: receive jobs, execute them, and terminate when told to.
  */
 void run_as_worker(void) {
-    // TODO: Insert your code here.
+    while(true) {
+        long int val;
+
+        if (val == 0) {
+            break;  // The master told us to stop.
+        }
+        int result = is_prime(val);
+        send_result(result);
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -126,7 +148,7 @@ int main(int argc, char *argv[]) {
     int size;
 
     const long int base = 10000000000001UL;
-    const long int r = 4000000;
+    const long int r = 2000000;
 
     /* Start up MPI */
     MPI_Init(&argc, &argv);

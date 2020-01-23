@@ -1,5 +1,4 @@
 #!/bin/bash -e
-#SBATCH -t 2:00 -N 1 --mem=200M
+#SBATCH -t 1:00 -N 1 --mem=200M
 
-
-mpirun $HOME/lab/parallel-demo/stencil-mpi
+mpirun ./stencil-mpi
