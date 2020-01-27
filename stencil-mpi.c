@@ -27,6 +27,14 @@
 double cells1[ARRAY_SIZE];
 double cells2[ARRAY_SIZE];
 
+/**
+ * Helper function to compute the index in the one-dimensional 'cells' arrays.
+ * The calculation takes into account the extra rows and columns.
+ *
+ * @param row The row number to access, from -1 up to and including ROWS.
+ * @param column The column number to access, from -1 up to and including COLUMNS_PER_PROCESSOR.
+ * @return The index in cells.
+ */
 int compute_index(const int row, const int column)
 {
     return COLUMN_SIZE*(column+1) + (row+1);
@@ -71,6 +79,11 @@ void recv_column(int proc, double *cells, const int col) {
              MPI_STATUS_IGNORE);
 }
 
+/**
+ * Apply the stencil operation to all cells in old_cells, and write the result to the cells in new_cells.
+ * @param old_cells The cells to apply the stencil operation to.
+ * @param new_cells The cells to fill with the result of the stencil operation.
+ */
 void run_stencil(const double *old_cells, double *new_cells)
 {
     for(int row = 0; row<ROWS; row++){
