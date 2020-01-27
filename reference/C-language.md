@@ -31,6 +31,7 @@ File | Content
 `stdbool.h` | Definitions for the Boolean type (`bool`)
 `math.h` | Functions on floating-point numbers, such as `sin()`, `exp()`, and `sqrt()`
 `omp.h` | The OpenMP library
+`mpi.h` | The MPI library
 
 ```c
 #define <name> <replacement>
@@ -52,7 +53,7 @@ parsings of the token string. Consider for example:
 #define B -25
 int x = A B;
 ```
-is perfectly legal C, and inititialises `x` with the value 75. This is almost certainly not
+is perfectly legal C, and inititialises `x` with the value 75, but this is almost certainly not
 what the programmer intended.
 
 ```c
@@ -76,6 +77,7 @@ name     | bits | description
 int      | 32   | integer
 long int | 64   | long integer
 char     |  8   | character
+bool     |  8   | Boolean
 double   | 64   | floating-point number
 void     |  -   | The 'void' type
 char *   | 64   | pointer to char (strings are char arrays ending with '\0' character)
@@ -102,10 +104,8 @@ are also allowed: `0xff` is the same value as `255`. Long integers can be writte
 adding a 'L' at the end: '0L', '12345678L', `-3L`, `0x1234567890ABCDEFL`.
 
 Character constants are written by surrounding a single letter with single quotes: `'a'`, `'B'`,
-`'0'`, `'$'`, `']'`. Some special characters:
-
-Some character sequences starting with a backslash have a special meaning. They are called 'escape sequences', and
-the starting backslash is called the 'escape character'.
+`'0'`, `'$'`, `']'`. Some character sequences starting with a backslash have a special meaning.
+They are called 'escape sequences', and the starting backslash is called the 'escape character'.
 
 character | ASCII value | description
 :-------- | ----------: | -----
@@ -122,7 +122,7 @@ The same escape sequences can also be used in strings:
 ```c
 "Hello world\n"
 ```
-ends the string with a new line (and the implicit terminating null character).
+ends the string with a new line.
 
 Floating point `double` constants are written like `10.2`, `-3.14159`, `1.2e3`, `3e-2`.
 
@@ -229,9 +229,25 @@ int main()
 
 A C compiler recognizes a few other types of `main()` function as well, but that is beyond this tutorial.
 
-## The #pragma annotations
-
 ## Compiling and running a C program
 
+To compile a program `hello.c` to an executable file `hello`, use:
+```shell script
+gcc hello.c -o hello
+```
+The resulting program can then be run with:
+```shell script
+./hello
+```
+You need the `./` in front because for security reasons the current directory is not in the search path.
 
-## Further reading
+It is recommended to let the compiler generate some warnings about questionable program code. A good start is:
+```shell script
+gcc -W -Wall hello.c -o hello
+```
+Note that for the workshop a set of rules for the `make` program is provided, so for the example program you can simply
+something like:
+```shell script
+make hello
+```
+And the compiler will be run with the proper flags.

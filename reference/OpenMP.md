@@ -66,4 +66,10 @@ of threads that can be used by OpenMP.
 
 ## Compiling and running an OpenMP program
 
+An OpenMP program can be run like any sequential program. By default all the cores of the processor are used.
+If the environment variable `OMP_NUM_THREADS` is defined, that specifies the number of threads to use. It is also
+possible to set the number of threads from within the program.
+
 ## Further reading
+
+The official OpenMP website is at: [https://openmp.org]
