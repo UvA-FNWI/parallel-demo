@@ -55,31 +55,6 @@ void fill_cells(double *cells)
 }
 
 /**
- * Send a column of data to the given processor.
- *
- * @param proc  The processor to send the column to.
- * @param cells The array to take the column from.
- * @param col The number of the column to send.
- */
-void send_column(const int proc, const double *cells, const int col) {
-    MPI_Send(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, 0, MPI_COMM_WORLD);
-}
-
-/**
- * Receive a column of data from the given processor. Note that since the data is stored on the borders of
- * the normal array, the column numbers look odd, namely -1 and COLUMNS_PER_PROCESSOR. This is as designed,
- * and the array is large enough to hold the data.
- *
- * @param proc  The processor to receive the column from.
- * @param cells The array to write the column to.
- * @param col The number of the column to put the received data.
- */
-void recv_column(int proc, double *cells, const int col) {
-    MPI_Recv(&cells[compute_index(0, col)], ROWS, MPI_DOUBLE, proc, MPI_ANY_TAG, MPI_COMM_WORLD,
-             MPI_STATUS_IGNORE);
-}
-
-/**
  * Apply the stencil operation to all cells in old_cells, and write the result to the cells in new_cells.
  * @param old_cells The cells to apply the stencil operation to.
  * @param new_cells The cells to fill with the result of the stencil operation.
@@ -99,12 +74,15 @@ void run_stencil(const double *old_cells, double *new_cells)
  * Exchange columns of data with the given processor.
  *
  * @param proc  The processor to exchange columns with.
- * @param cells The array where the columns live.
+ * @param cells The cells array where the columns live.
  * @param send_col The number of the column to send.
  * @param recv_col The number of the column to receive.
  */
 void exchange_columns(const int proc, double *cells, const int send_col, const int recv_col) {
+    double *send_buffer = &cells[compute_index(0, send_col)];
+    double *recv_buffer = &cells[compute_index(0, recv_col)];
     // Put communication here.
+    // Hints: use a tag value of 0, use MPI_COMM_WORLD
 }
 
 int main(int argc, char *argv[]) {
