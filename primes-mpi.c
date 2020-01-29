@@ -135,6 +135,7 @@ void run_as_worker(void) {
     while(true) {
         long int val;
 
+        await_command(&val);
         if (val == 0) {
             break;  // The master told us to stop.
         }
