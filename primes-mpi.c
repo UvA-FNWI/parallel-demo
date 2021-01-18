@@ -163,11 +163,11 @@ int main(int argc, char *argv[]) {
         const double start = MPI_Wtime();
         int primes = run_as_master(size - 1, base, r);
         const double finish = MPI_Wtime();
-        printf("Master has finished. There are %d primes between %ld and %ld, this took %.1f seconds\n", primes, base, base + r, finish-start);
+        printf("Stopped as master. There are %d primes between %ld and %ld, this took %.1f seconds\n", primes, base, base + r, finish-start);
     } else {
         printf("Running as worker %d\n", rank);
         run_as_worker();
-        printf("Worker %d has finished\n", rank);
+        printf("Stopped as worker %d\n", rank);
     }
 
     MPI_Finalize();
