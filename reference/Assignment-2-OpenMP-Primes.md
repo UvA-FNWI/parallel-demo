@@ -16,6 +16,6 @@ sbatch primes-omp-sbatch.sh
 ```
 - Look at `slurm-xxxx.out` for the result of the run (there should be 67001 primes)
 - Write down the number of workers used, and the computation time
-- Edit the specification `-N 1` in `primes-mpi-sbatch.sh` to run with a different number of processors,
-and make a speedup table.
+- Edit the specification `OMP_NUM_THREADS` in `primes-mpi-sbatch.sh` to run with a different number of threads,
+and make a speedup table. The default expression evaluates to 16 on the Lisa nodes.
 
