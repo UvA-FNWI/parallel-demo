@@ -7,8 +7,9 @@ SRC = hello.c primes-omp.c primes-mpi.c stencil-mpi.c
 JUNK +=
 
 CFLAGS += -O3 -Wall -W --std=c11 -lm
+CXXFLAGS += -O3 -Wall -W --std=c++11 -lm -Wno-cast-function-type
 OMP_CFLAGS = $(CFLAGS) -fopenmp
-MPI_CFLAGS = $(CFLAGS) -lmpi
+MPI_CFLAGS = $(CXXFLAGS) -lmpi
 
 help:
 	@echo "help\tShow this help text"

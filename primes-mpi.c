@@ -108,7 +108,7 @@ int run_as_master(int worker_count, long int startval, long int nval) {
         // If we start with an even number, skip it. Note that we already dealt with 2 above.
         val++;
     }
-    for (int worker = 1; worker <worker_count && val <= endval; worker++) {
+    for (int worker = 1; worker <= worker_count && val <= endval; worker++) {
         send_work_command(worker, val);
         val += 2;
         active_workers++;
