@@ -159,9 +159,10 @@ int main(int argc, char *argv[]) {
     const bool am_master = 0 == rank;
 
     if (am_master) {
-        printf("Running as master\n");
+        int workers = size -1;
+        printf("Running as master with %d workers\n", workers);
         const double start = MPI_Wtime();
-        int primes = run_as_master(size - 1, base, r);
+        int primes = run_as_master(workers, base, r);
         const double finish = MPI_Wtime();
         printf("Stopped as master. There are %d primes between %ld and %ld, this took %.1f seconds\n", primes, base, base + r, finish-start);
     } else {

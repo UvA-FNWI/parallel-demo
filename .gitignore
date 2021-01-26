@@ -2,6 +2,7 @@ a.out
 hello-omp
 primes
 primes-mpi
+primes-omp
 stencil-mpi
 hello
 README.md
