@@ -30,8 +30,8 @@ MPI_Comm_size(MPI_COMM_WORLD, &size);
 ```c
 double vector[SZ];
 MPI_Status status;
-MPI_Send(vector, SZ, MPI_Double, 2, 0, MPI_COMM_WORLD);
-MPI_Recv(vector, SZ, MPI_Double, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
+MPI_Send(vector, SZ, MPI_DOUBLE, 2, 0, MPI_COMM_WORLD);
+MPI_Recv(vector, SZ, MPI_DOUBLE, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
 ```
 
 The `MPI_Send()` and `MPI_Recv()` functions are used to send and receive data.
@@ -47,8 +47,8 @@ data before `MPI_Send()` returns.
 ```c
 double vector1[SZ], vector2[SZ];
 MPI_Status status;
-MPI_Sendrecv(vector1, SZ, MPI_Double, 2, 0,
-             vector2, SZ, MPI_Double, 2, 0, MPI_COMM_WORLD, &status);
+MPI_Sendrecv(vector1, SZ, MPI_DOUBLE, 2, 0,
+             vector2, SZ, MPI_DOUBLE, 2, 0, MPI_COMM_WORLD, &status);
 ```
 
 Here the send and receive are combined in one call.
