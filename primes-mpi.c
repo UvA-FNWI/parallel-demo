@@ -24,7 +24,7 @@ bool is_prime(long int n) {
     }
     const long int top = (long int) ceil(sqrt(n));
     bool res = true;
-    for (long int k = 3; k < top; k += 2) {
+    for (long int k = 3; k <= top; k += 2) {
         if ((n % k) == 0) {
             res = false;
             break;
