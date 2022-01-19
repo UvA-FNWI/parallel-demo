@@ -29,14 +29,8 @@ Hello, World!
 ```
 To verify that the program has run properly.
 
-Now edit the program to print what the square of 5 is, and then compile and submit it again.
+Now edit the program to print "Hello universe", and then compile and submit it again.
 This is to verify that you can also modify and run a program.
-
-Hints:
-
-printf(<string-with-formats>, <parm> ... <parm>);
-
-The printf() format string you need is %d
 
 Note: For this workshop there is a special queue. Edit the hello-sbatch.sh
 file and remove the reservation line if you want to run the examples at a

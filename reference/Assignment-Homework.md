@@ -1,6 +1,8 @@
 # Assignment: matrix-vector multiplication
 
 - This is a group assignment
+
+- Assignments are submitted through Canvas, deadlines are handled by Canvas
   
 - Code should be of decent quality: documented, commented, proper error handling, proper use of the C language
   
