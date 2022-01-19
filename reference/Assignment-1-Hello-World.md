@@ -29,7 +29,7 @@ Hello, World!
 ```
 To verify that the program has run properly.
 
-Now edit the program to print "Hello universe", and then compile and submit it again.
+Now edit the program to print "Hello, universe!", and then compile and submit it again.
 This is to verify that you can also modify and run a program.
 
 Note: For this workshop there is a special queue. Edit the hello-sbatch.sh
