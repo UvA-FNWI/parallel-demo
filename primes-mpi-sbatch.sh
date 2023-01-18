@@ -1,4 +1,4 @@
 #!/bin/bash -e
-#SBATCH -t 3:00 -N 1 --mem=100M
+#SBATCH -t 3:00 -n 16 --mem=100M
 
 srun --mpi=pmi2 ./primes-mpi
