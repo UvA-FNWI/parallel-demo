@@ -2,6 +2,13 @@
 Demonstration and practice code for a tutorial on the parallel programming frameworks
 OpenMP and MPI. The files ending with '.sbatch.sh' are Slurm batch submission files.
 
+## Required modules
+Make sure you have done the equivalent of the following:
+    module load 2022
+    module load OpenMPI/4.1.4-GCC-11.3.0
+
+
+
 ## Hello world
 
 File: hello.c
