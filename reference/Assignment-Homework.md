@@ -45,8 +45,8 @@ You can do a '#include' of the patterns to incorporate them into your code.
 - Verify that the 'glider' pattern has a population of exactly 5 in all generations until
 the pattern leaves the board
 
-- Verify that the 'grower' pattern has a population of 48 at generation 10, and a population
-of 96 at generation 100.
+- Verify that the 'grower' pattern has a population of 49 at generation 10, and a population
+of 138 at generation 100.
 
 - There are a number of programs and websites to help you visualize the Game of Life. The one I
 use is https://golly.sourceforge.net. The file set on Canvas also contains .rle files of
