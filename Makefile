@@ -32,8 +32,8 @@ primes-omp: primes-omp.c
 	$(CC) $(OMP_CFLAGS) -o primes-omp primes-omp.c
 
 primes-mpi: primes-mpi.c
-	mpiCC $(MPI_CFLAGS) -o primes-mpi primes-mpi.c
+	mpicc $(MPI_CFLAGS) -o primes-mpi primes-mpi.c
 
 stencil-mpi: stencil-mpi.c
-	mpiCC $(MPI_CFLAGS) -o stencil-mpi stencil-mpi.c
+	mpicc $(MPI_CFLAGS) -o stencil-mpi stencil-mpi.c
 
